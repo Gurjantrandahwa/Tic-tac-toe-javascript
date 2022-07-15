@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8 ">
+    <title>Tick-Tac-Toe</title>
+    <style>
+        body {
+            background-color: #037a7a
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            font-weight: 200;
+            font-size: 50px;
+
+        }
+
+        .box-wrapper {
+            width: 900px;
+            display: flex;
+            margin: auto;
+            justify-content: center;
+        }
+
+        .box {
+            border: 4px solid white;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: white;
+        }
+
+        button {
+            margin: auto;
+            display: flex;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #01360a;
+            color: white;
+            font-size: 20px;
+        }
+
+        .winningMessage {
+            font-size: x-large;
+            color: white;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+
+    </style>
+</head>
+<body>
+<h1> Tic-Tac-Toe</h1>
+
+<div class="box-wrapper">
+    <div class="line">
+        <div class="box" id="b1"></div>
+        <div class="box" id="b2"></div>
+        <div class="box" id="b3"></div>
+    </div>
+    <div class="line">
+        <div class="box" id="b4"></div>
+        <div class="box" id="b5"></div>
+        <div class="box" id="b6"></div>
+    </div>
+    <div class="line">
+        <div class="box" id="b7"></div>
+        <div class="box" id="b8"></div>
+        <div class="box" id="b9"></div>
+    </div>
+</div>
+<div class="winningMessage" id="winningMessage">
+</div>
+<div>
+    <button id="restart button" onclick="startGame()">Restart</button>
+</div>
+<script>
+    let d_b1, d_b2, d_b3, d_b4, d_b5, d_b6, d_b7, d_b8, d_b9;
+    d_b1 = document.getElementById("b1");
+    d_b2 = document.getElementById("b2");
+    d_b3 = document.getElementById("b3");
+    d_b4 = document.getElementById("b4");
+    d_b5 = document.getElementById("b5");
+    d_b6 = document.getElementById("b6");
+    d_b7 = document.getElementById("b7");
+    d_b8 = document.getElementById("b8");
+    d_b9 = document.getElementById("b9");
+    let player = "X"
+    let tic = player === "X";
+    let draw=false;
+    let win=false;
+    for (let i = 0; i < 9; i++) {
+        document.getElementById("b" + (i + 1)).addEventListener("click", () => {
+            if(document.getElementById("b" + (i + 1)).innerHTML){
+               return;
+            }
+            if(draw)return;
+            if(win)return;
+            if (tic) {
+                document.getElementById("b" + (i + 1)).innerHTML = "X"
+            } else {
+                document.getElementById("b" + (i + 1)).innerHTML = "O"
+            }
+            getWinner(tic)
+            tic = !tic;
+        })
+    }
+    function isDraw(cellElements) {
+        return cellElements.every(box => {
+            return box
+        })
+    }
+    function startGame() {
+        draw=false;
+        win=false;
+        [
+            d_b1,
+            d_b2,
+            d_b3,
+            d_b4,
+            d_b5,
+            d_b6,
+            d_b7,
+            d_b8,
+            d_b9
+        ].forEach(box => {
+            box.innerHTML = ""
+            player = player === 'X' ? 'O' : 'X';
+            tic = player === "X"
+        })
+    }
+    function getWinner(is_player_x) {
+        let b1, b2, b3, b4, b5, b6, b7, b8, b9;
+        b1 = d_b1.innerHTML;
+        b2 = d_b2.innerHTML;
+        b3 = d_b3.innerHTML;
+        b4 = d_b4.innerHTML;
+        b5 = d_b5.innerHTML;
+        b6 = d_b6.innerHTML;
+        b7 = d_b7.innerHTML;
+        b8 = d_b8.innerHTML;
+        b9 = d_b9.innerHTML;
+        const winningMessageElement = document.getElementById('winningMessage')
+        if (
+            (b1 !== "" && b1 === b2 && b1 === b3) ||
+            (b4 !== "" && b4 === b5 && b4 === b6) ||
+            (b7 !== "" && b7 === b8 && b7 === b9) ||
+            (b1 !== "" && b1 === b4 && b1 === b7) ||
+            (b2 !== "" && b2 === b5 && b2 === b8) ||
+            (b3 !== "" && b3 === b6 && b3 === b9) ||
+            (b1 !== "" && b1 === b5 && b1 === b9) ||
+            (b3 !== "" && b3 === b5 && b3 === b7)
+        ) {
+            win=true
+            winningMessageElement.innerHTML = `Player with ${is_player_x ? "X" : "O"} wins`
+        } else if (isDraw([b1, b2, b3, b4, b5, b6, b7, b8, b9])) {
+            draw=true;
+            winningMessageElement.innerHTML = "Draw"
+
+        }
+    }
+</script>
+</body>
+</html>
